@@ -1,7 +1,10 @@
 import Navbar from "@/components/Navbar";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+
 import "./globals.css";
+import "simplebar-react/dist/simplebar.min.css";
+
 import Providers from "@/components/providers";
 import { Toaster } from "@/components/ui/toaster";
 

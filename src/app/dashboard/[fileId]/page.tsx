@@ -4,6 +4,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 import { db } from "@/db";
 import PdfRenderer from "@/components/pdf-renderer";
+import ChatWrapper from "@/components/chat/chat-wrapper";
 
 async function FilePage({
   params,
@@ -40,8 +41,7 @@ async function FilePage({
         </div>
 
         <div className="shrink-0 flex-[0.75] border-t border-gray-200 lg:w-96 lg:border-l lg:border-t-0">
-          {/* <ChatWrapper isSubscribed={plan.isSubscribed} fileId={file.id} /> */}
-          Chat
+          <ChatWrapper fileId={file.id} />
         </div>
       </div>
     </div>
