@@ -2,17 +2,16 @@ import Navbar from "@/components/Navbar";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import "./globals.css";
 import "simplebar-react/dist/simplebar.min.css";
+import "./globals.css";
 
 import Providers from "@/components/providers";
 import { Toaster } from "@/components/ui/toaster";
-import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Quill",
+  title: "PDFInsight",
   description: "Chat with your documents in seconds.",
 };
 
@@ -25,16 +24,9 @@ export default function RootLayout({
     <html lang="en">
       <Providers>
         <body className={inter.className}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Toaster />
-            <Navbar />
-            {children}
-          </ThemeProvider>
+          <Toaster />
+          <Navbar />
+          {children}
         </body>
       </Providers>
     </html>

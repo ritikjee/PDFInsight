@@ -1,14 +1,16 @@
 import Link from "next/link";
 
 import {
+  getKindeServerSession,
   LoginLink,
   RegisterLink,
-  getKindeServerSession,
 } from "@kinde-oss/kinde-auth-nextjs/server";
 
 import MobileNav from "./mobile-navbar";
 
 import MaxWidthWrapper from "./MaxWidthWrapper";
+import UserAccountNav from "./user-details";
+import { ArrowRight } from "lucide-react";
 import { buttonVariants } from "./ui/button";
 
 const Navbar = () => {
@@ -20,7 +22,7 @@ const Navbar = () => {
       <MaxWidthWrapper>
         <div className="flex h-14 items-center justify-between border-b border-zinc-200 dark:border-0">
           <Link href="/" className="flex z-40 font-semibold">
-            <span>quill.</span>
+            <span>PDFInsight</span>
           </Link>
 
           <MobileNav isAuth={!!user} />
@@ -28,15 +30,6 @@ const Navbar = () => {
           <div className="hidden items-center space-x-4 sm:flex">
             {!user ? (
               <>
-                <Link
-                  href="/pricing"
-                  className={buttonVariants({
-                    variant: "ghost",
-                    size: "sm",
-                  })}
-                >
-                  Pricing
-                </Link>
                 <LoginLink
                   className={buttonVariants({
                     variant: "ghost",
@@ -50,7 +43,7 @@ const Navbar = () => {
                     size: "sm",
                   })}
                 >
-                  Register
+                  Get started <ArrowRight className="ml-1.5 h-5 w-5" />
                 </RegisterLink>
               </>
             ) : (
@@ -64,6 +57,16 @@ const Navbar = () => {
                 >
                   Dashboard
                 </Link>
+
+                <UserAccountNav
+                  name={
+                    !user.given_name || !user.family_name
+                      ? "Your Account"
+                      : `${user.given_name} ${user.family_name}`
+                  }
+                  email={user.email ?? ""}
+                  imageUrl={user.picture ?? ""}
+                />
               </>
             )}
           </div>
