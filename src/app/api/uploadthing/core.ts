@@ -2,7 +2,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
-import { PineconeStore } from "@langchain/pinecone";
+import { PineconeStore } from "langchain/vectorstores/pinecone";
 
 import { db } from "@/db";
 import { getPineconeClient } from "@/lib/pine-cone";
@@ -52,7 +52,6 @@ export const ourFileRouter = {
         console.log("running");
 
         await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
-          //@ts-ignore
           pineconeIndex,
           namespace: createdFile.id,
         });

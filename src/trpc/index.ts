@@ -106,6 +106,64 @@ export const appRouter = router({
 
       return { status: file.uploadStatus };
     }),
+
+  getFileMessages: privateProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).default(10).nullish(),
+        cursor: z.string().nullish(),
+        fileId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { userId } = ctx;
+      const { fileId, cursor } = input;
+      const limit = input.limit ?? 10;
+
+      const file = await db.file.findFirst({
+        where: {
+          id: fileId,
+          userId,
+        },
+      });
+
+      if (!file) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "File not found",
+        });
+      }
+
+      const messages = await db.message.findMany({
+        where: {
+          fileId,
+          userId,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        cursor: cursor ? { id: cursor } : undefined,
+        take: limit + 1,
+        select: {
+          id: true,
+          text: true,
+          createdAt: true,
+          isUserMessage: true,
+        },
+      });
+
+      let nextCursor: typeof cursor | undefined = undefined;
+
+      if (messages.length > limit) {
+        const nextItem = messages.pop()?.id;
+        nextCursor = nextItem ?? undefined;
+      }
+
+      return {
+        messages: messages.reverse(),
+        nextCursor,
+      };
+    }),
 });
 
 export type AppRouter = typeof appRouter;
